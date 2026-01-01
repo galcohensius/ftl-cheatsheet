@@ -478,7 +478,7 @@ def graph_add_event(event, enemy_ship_name):
         else:
             breach_html = ''
 
-        actions.append('<li><strong>Boarded</strong> by {num} {spc}</strong>{breach_html}'.format(
+        actions.append('<li><strong>Boarded</strong> by {num} {spc}{breach_html}'.format(
             num = H(num),
             spc = H(spc),
             breach_html = breach_html))
@@ -624,7 +624,7 @@ def graph_add_event(event, enemy_ship_name):
                 else:
                     effect_msg = ''
 
-                actions.append('<li>{amount} <strong>System Damage</strong> to {system}{effect_msg}</strong>'.format(
+                actions.append('<li>{amount} <strong>System Damage</strong> to {system}{effect_msg}'.format(
                      amount = H(amount),
                      system = H(system),
                      effect_msg = H(effect_msg)))
