@@ -1,89 +1,740 @@
 
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTL Cheatsheet</title>
     <style>
-
-        body {
-            /* More readable text*/
-            font-family: sans-serif;
-            color: #222;
-            max-width:50em;
-            margin: 0 auto;
+        :root {
+            /* Dark theme (default) */
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --bg-hover: #1e3a5f;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --accent-blue: #10aee8;
+            --accent-green: #4ade80;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --accent-purple: #a78bfa;
+            --border-color: #2d3748;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* The "visited" colors for links is not very useful */
-        a, a:visited { color: rgb(0, 0, 238); }
+        [data-theme="light"] {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #e9ecef;
+            --bg-card: #ffffff;
+            --bg-hover: #f1f3f5;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent-blue: #0d6efd;
+            --accent-green: #198754;
+            --accent-red: #dc3545;
+            --accent-yellow: #ffc107;
+            --accent-purple: #6f42c1;
+            --border-color: #dee2e6;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
 
-        /* Many of our link contain underscores, which look weird when underlined*/
-        a { text-decoration: none; }
-        a:hover, a:focus { text-decoration: underline; }
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            max-width: 70em;
+            margin: 0 auto;
+            padding: 1em;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent-blue);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Sticky header */
+        header {
+            padding: 1em 0;
+            margin-bottom: 1em;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 0.5em 0;
+            color: var(--accent-blue);
+            border-bottom: 3px solid var(--accent-blue);
+            padding-bottom: 0.5em;
+        }
 
         h2 {
-            font-size: medium;
+            font-size: 1.3em;
+            margin-top: 0.75em;
+            margin-bottom: 0.25em;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            padding: 0.5em 0.75em;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-blue);
+            box-shadow: var(--shadow);
+            position: relative;
         }
 
         h2 > a {
             color: inherit !important;
+            text-decoration: none;
         }
 
-        /* Our notation for lists */
-        .texts  { list-style: circle;  } /* RNG text alternatives */
-        .random { list-style: circle;  } /* RNG event alternatives */
-        .result { list-style: disc;    } /* Event outcomes */
-        .choice { list-style: decimal; } /* Player choice */
-        .fight  { list-style: square;  } /* Ship fight */
+        h2 > a:hover {
+            text-decoration: underline;
+        }
+
+        /* Badge for event types */
+        h2[id^="event-"]::before {
+            content: "EVENT";
+            display: inline-block;
+            font-size: 0.6em;
+            font-weight: normal;
+            background: var(--accent-green);
+            color: white;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            margin-right: 0.5em;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        h2[id^="list-"]::before {
+            content: "GROUP";
+            display: inline-block;
+            font-size: 0.6em;
+            font-weight: normal;
+            background: var(--accent-purple);
+            color: white;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            margin-right: 0.5em;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        h2[id^="ship-"]::before {
+            content: "SHIP";
+            display: inline-block;
+            font-size: 0.6em;
+            font-weight: normal;
+            background: var(--accent-red);
+            color: white;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            margin-right: 0.5em;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        /* Search box */
+        .search-container {
+            margin: 1em 0;
+            position: relative;
+        }
+
+        #search {
+            width: 100%;
+            padding: 0.75em 1em;
+            font-size: 1em;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #search:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(16, 174, 232, 0.2);
+        }
+
+        .search-info {
+            margin-top: 0.5em;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        /* Settings panel */
+        .settings {
+            background: var(--bg-card);
+            padding: 1em;
+            border-radius: 8px;
+            margin: 1em 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .settings h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .settings ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .settings li {
+            margin: 0.5em 0;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Custom checkbox styling */
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75em;
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
+
+        label {
+            cursor: pointer;
+            user-select: none;
+            color: var(--text-primary);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5em 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            margin-left: 1em;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+        }
+
+        /* Card containers */
+        .indent {
+            background: var(--bg-secondary);
+            padding: 0.75em 1em;
+            margin: 0.5em 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: opacity 0.3s ease;
+        }
+
+        .indent.hidden {
+            display: none;
+        }
+
+        /* Result lists - green accent */
+        ul.result {
+            background: rgba(74, 222, 128, 0.1);
+            padding: 0.4em 1em;
+            border-radius: 6px;
+            margin: 0.25em 0;
+            border-left: 4px solid var(--accent-green);
+            list-style: disc;
+        }
+
+        ul.result li {
+            margin: 0.15em 0;
+        }
+
+        /* Choice lists - yellow accent */
+        ol.choice {
+            background: rgba(251, 191, 36, 0.1);
+            padding: 0.4em 1em;
+            border-radius: 6px;
+            margin: 0.25em 0;
+            border-left: 4px solid var(--accent-yellow);
+            list-style: decimal;
+        }
+
+        ol.choice li {
+            margin: 0.2em 0;
+        }
+
+        ol.choice li em {
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        /* Fight lists - red accent */
+        ul.fight {
+            background: rgba(248, 113, 113, 0.1);
+            padding: 0.4em 1em;
+            border-radius: 6px;
+            margin: 0.25em 0;
+            border-left: 4px solid var(--accent-red);
+            list-style: square;
+        }
 
         ul.fight > li {
-            margin-top: 10px;
-            margin-bottom: 10px;
+            margin: 0.3em 0;
         }
 
+        /* Random lists - purple accent */
+        ul.random {
+            background: rgba(167, 139, 250, 0.1);
+            padding: 0.3em 0.75em;
+            border-radius: 6px;
+            margin: 0.2em 0;
+            border-left: 3px solid var(--accent-purple);
+            list-style: circle;
+        }
+
+        ul.random li {
+            margin: 0.15em 0;
+        }
+
+        /* Text alternatives */
         ul.texts {
-            padding-left: 0px;
+            padding-left: 0;
+            list-style: circle;
+            margin: 0.5em 0;
         }
 
-        .indent {
-            padding-left: 20px;
-        }
-
+        /* Blue choices */
         .blue {
-            color: #10aee8;
+            color: var(--accent-blue);
+            font-weight: 600;
+            background: rgba(16, 174, 232, 0.15);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
         }
 
-        .inner { display: none; }
-        .showchildren .inner { display: block; }
+        /* Inner text (hidden by default) */
+        .inner {
+            display: none;
+            margin-top: 0.25em;
+            padding: 0.3em 0.5em;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
 
+        [data-theme="light"] .inner {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .showchildren .inner {
+            display: block;
+        }
+
+        /* Links */
+        a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover, a:focus {
+            color: #5dd5f3;
+            text-decoration: underline;
+        }
+
+        a:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 2px;
+        }
+
+        /* Paragraphs */
+        p {
+            margin: 0.4em 0;
+        }
+
+        /* Table of Contents */
+        .toc {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            width: 250px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1em;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            z-index: 50;
+        }
+
+        .toc.visible {
+            display: block;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            font-size: 1em;
+            color: var(--accent-blue);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 0.3em 0;
+        }
+
+        .toc a {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            display: block;
+            padding: 0.3em 0.5em;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .toc a:hover {
+            background: var(--bg-hover);
+            color: var(--accent-blue);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #5dd5f3;
+            transform: translateY(-2px);
+        }
+
+        /* Search highlight */
+        .highlight {
+            background: var(--accent-yellow);
+            color: var(--text-primary);
+            padding: 0.1em 0.2em;
+            border-radius: 2px;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5em;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+                padding: 0.5em 0.75em;
+            }
+
+            .toc {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                max-height: 300px;
+                margin: 1em 0;
+            }
+
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .indent {
+                padding: 1em;
+            }
+
+            .settings {
+                padding: 0.75em;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .toc, .back-to-top, .search-container, .settings {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>FTL Cheatsheet</h1>
-    <p>This page summarizes all the events in <a href="https://subsetgames.com/ftl.html">FTL Advanced Edition</a>.
-       I created it because I got tired of wading through slow wiki pages and unreadable XML data files,
-       when I am trying to remember what a particular event does.
-       Use Ctrl-F to find the event your are looking for, and have fun!
-    <p>Notes: You can use Ctrl-S to save a local copy of this page.
-       Some events in the list may be test or demo events, which cannot be encountered via normal gameplay.
-       It you have a suggestion, you can send feedback <a href="https://github.com/hugomg/ftl-cheatsheet/issues">here</a>.
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <header>
+        <h1>FTL Cheatsheet</h1>
+        <p>This page summarizes all the events in <a href="https://subsetgames.com/ftl.html">FTL Advanced Edition</a>.
+           I created it because I got tired of wading through slow wiki pages and unreadable XML data files,
+           when I am trying to remember what a particular event does.
+           Use the search box below or Ctrl-F to find the event you are looking for, and have fun!
+        <p>Notes: You can use Ctrl-S to save a local copy of this page.
+           Some events in the list may be test or demo events, which cannot be encountered via normal gameplay.
+           If you have a suggestion, you can send feedback <a href="https://github.com/hugomg/ftl-cheatsheet/issues">here</a>.
+    </header>
 
-    <h2>Settings</h2>
-    <ul style="list-style:none">
-        <li><input type="checkbox" id="showinner"><label for="showinner">Show full text for event responses</label>
-    </ul>
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Search events, groups, or ships..." aria-label="Search">
+        <div class="search-info" id="search-info"></div>
+    </div>
+
+    <div class="settings">
+        <h2>Settings</h2>
+        <ul>
+            <li>
+                <input type="checkbox" id="showinner" aria-label="Show full text for event responses">
+                <label for="showinner">Show full text for event responses</label>
+            </li>
+            <li>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Toggle Theme</button>
+            </li>
+            <li>
+                <button class="theme-toggle" id="toc-toggle" aria-label="Toggle table of contents">Toggle Table of Contents</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="toc" id="toc" role="navigation" aria-label="Table of contents">
+        <h3>Contents</h3>
+        <ul id="toc-list"></ul>
+    </div>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+    <main id="main-content">
 
     <script>
-        var toggle = document.getElementById('showinner')
-        update_showhidden();
-        toggle.addEventListener('change', update_showhidden);
+        // Theme toggle
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
 
-        function update_showhidden() {
-            if (toggle.checked) {
-                document.body.className = 'showchildren';
-            } else {
-                document.body.className = '';
+            themeToggle.addEventListener('click', function() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        })();
+
+        // Show/hide inner text
+        (function() {
+            const toggle = document.getElementById('showinner');
+            const saved = localStorage.getItem('showinner') === 'true';
+            if (toggle) {
+                toggle.checked = saved;
+                updateShowHidden();
+                toggle.addEventListener('change', function() {
+                    updateShowHidden();
+                    localStorage.setItem('showinner', toggle.checked);
+                });
             }
-        }
+
+            function updateShowHidden() {
+                if (toggle.checked) {
+                    document.body.classList.add('showchildren');
+                } else {
+                    document.body.classList.remove('showchildren');
+                }
+            }
+        })();
+
+        // Search functionality
+        (function() {
+            const searchInput = document.getElementById('search');
+            const searchInfo = document.getElementById('search-info');
+            let searchTimeout;
+
+            function highlightText(text, query) {
+                if (!query) return text;
+                const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')})`, 'gi');
+                return text.replace(regex, '<span class="highlight">$1</span>');
+            }
+
+            function performSearch() {
+                const query = searchInput.value.toLowerCase().trim();
+                const h2Elements = document.querySelectorAll('h2[id]');
+                const indentDivs = document.querySelectorAll('.indent');
+                let visibleCount = 0;
+
+                if (query === '') {
+                    h2Elements.forEach(h2 => {
+                        h2.closest('.indent')?.classList.remove('hidden');
+                        const indent = h2.nextElementSibling;
+                        if (indent && indent.classList.contains('indent')) {
+                            indent.classList.remove('hidden');
+                        }
+                        // Remove highlights when clearing search
+                        const link = h2.querySelector('a');
+                        if (link) {
+                            const originalText = link.textContent.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
+                            link.textContent = originalText;
+                        }
+                    });
+                    indentDivs.forEach(div => div.classList.remove('hidden'));
+                    searchInfo.textContent = '';
+                    return;
+                }
+
+                h2Elements.forEach(h2 => {
+                    const text = h2.textContent.toLowerCase();
+                    const indent = h2.nextElementSibling;
+                    const isMatch = text.includes(query);
+
+                    if (isMatch) {
+                        visibleCount++;
+                        if (indent && indent.classList.contains('indent')) {
+                            indent.classList.remove('hidden');
+                        }
+                        h2.closest('.indent')?.classList.remove('hidden');
+                        // Highlight in h2 link text only
+                        const link = h2.querySelector('a');
+                        if (link) {
+                            const originalText = link.textContent.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
+                            link.innerHTML = highlightText(originalText, query);
+                        }
+                    } else {
+                        if (indent && indent.classList.contains('indent')) {
+                            indent.classList.add('hidden');
+                        }
+                        h2.closest('.indent')?.classList.add('hidden');
+                        // Restore original link text when hidden
+                        const link = h2.querySelector('a');
+                        if (link && query !== '') {
+                            const originalText = link.textContent.replace(/<span class="highlight">(.*?)<\/span>/gi, '$1');
+                            link.textContent = originalText;
+                        }
+                    }
+                });
+
+                // Also search in content
+                indentDivs.forEach(div => {
+                    if (!div.classList.contains('hidden')) {
+                        const text = div.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            visibleCount++;
+                        }
+                    }
+                });
+
+                searchInfo.textContent = query ? `Found ${visibleCount} result${visibleCount !== 1 ? 's' : ''}` : '';
+            }
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performSearch, 300);
+            });
+        })();
+
+        // Table of Contents - wait for page to fully load
+        (function() {
+            const tocToggle = document.getElementById('toc-toggle');
+            const toc = document.getElementById('toc');
+            const tocList = document.getElementById('toc-list');
+
+            function buildTOC() {
+                const h2Elements = document.querySelectorAll('h2[id]');
+                tocList.innerHTML = '';
+                h2Elements.forEach(h2 => {
+                    const id = h2.id;
+                    const text = h2.textContent;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#' + id;
+                    a.textContent = text;
+                    li.appendChild(a);
+                    tocList.appendChild(li);
+                });
+            }
+
+            tocToggle.addEventListener('click', function() {
+                toc.classList.toggle('visible');
+            });
+
+            // Wait for DOM to be fully loaded before building TOC
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', buildTOC);
+            } else {
+                // DOM already loaded (e.g., script at end of body)
+                buildTOC();
+            }
+        })();
+
+        // Back to top button
+        (function() {
+            const backToTop = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
     </script>
 <h1>Events</h1>
 <h2 id="event-ALISON_DEFECTOR"><a href="#event-ALISON_DEFECTOR">ALISON_DEFECTOR</a></h2>
@@ -15475,6 +16126,8 @@
 </div>
 </ul>
 </div>
+
+    </main>
 
 </body>
 </html>
