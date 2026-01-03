@@ -41,12 +41,178 @@
             --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
 
+        /* Space Theme 1: Nebula - purple/pink cosmic */
+        [data-theme="nebula"] {
+            --bg-primary: #0d0221;
+            --bg-secondary: #190535;
+            --bg-card: #2d1b4e;
+            --bg-hover: #3d2a5e;
+            --text-primary: #e8d5f2;
+            --text-secondary: #b794c9;
+            --accent-blue: #00d4ff;
+            --accent-green: #00ff9d;
+            --accent-red: #ff4d6d;
+            --accent-yellow: #ffd93d;
+            --accent-purple: #c77dff;
+            --border-color: #4a2c6a;
+            --shadow: 0 4px 6px rgba(199, 125, 255, 0.2);
+            --shadow-lg: 0 10px 15px rgba(199, 125, 255, 0.3);
+        }
+
+        /* Space Theme 2: Starfield - deep blue with stars */
+        [data-theme="starfield"] {
+            --bg-primary: #020617;
+            --bg-secondary: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-red: #fb7185;
+            --accent-yellow: #facc15;
+            --accent-purple: #a78bfa;
+            --border-color: #475569;
+            --shadow: 0 4px 6px rgba(56, 189, 248, 0.15);
+            --shadow-lg: 0 10px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Space Theme 3: Cosmos - dark with vibrant cosmic colors */
+        [data-theme="cosmos"] {
+            --bg-primary: #000814;
+            --bg-secondary: #001d3d;
+            --bg-card: #003566;
+            --bg-hover: #004080;
+            --text-primary: #fff8e7;
+            --text-secondary: #c9d6df;
+            --accent-blue: #00b4d8;
+            --accent-green: #80ed99;
+            --accent-red: #ff6b6b;
+            --accent-yellow: #ffd60a;
+            --accent-purple: #9d4edd;
+            --border-color: #005588;
+            --shadow: 0 4px 6px rgba(0, 180, 216, 0.2);
+            --shadow-lg: 0 10px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        /* Retro Green Terminal Theme */
+        [data-theme="terminal"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            --bg-hover: #252525;
+            --text-primary: #33ff33;
+            --text-secondary: #22aa22;
+            --accent-blue: #33ff33;
+            --accent-green: #33ff33;
+            --accent-red: #ff3333;
+            --accent-yellow: #ffff33;
+            --accent-purple: #ff33ff;
+            --border-color: #2a5a2a;
+            --shadow: 0 4px 6px rgba(51, 255, 51, 0.1);
+            --shadow-lg: 0 10px 15px rgba(51, 255, 51, 0.15);
+        }
+
         * {
             box-sizing: border-box;
         }
 
         html {
             scroll-behavior: smooth;
+        }
+
+        /* Stars background for space themes */
+        .stars {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        [data-theme="nebula"] .stars,
+        [data-theme="starfield"] .stars,
+        [data-theme="cosmos"] .stars {
+            display: block;
+        }
+
+        .stars::before,
+        .stars::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, white, transparent),
+                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1.5px 1.5px at 90px 40px, white, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1.2px 1.2px at 160px 120px, white, transparent),
+                radial-gradient(1px 1px at 200px 50px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.5px 1.5px at 250px 160px, white, transparent),
+                radial-gradient(1px 1px at 300px 100px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1.2px 1.2px at 350px 200px, white, transparent),
+                radial-gradient(1px 1px at 400px 60px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 450px 180px, white, transparent),
+                radial-gradient(1.5px 1.5px at 500px 90px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 50px 150px, white, transparent),
+                radial-gradient(1.2px 1.2px at 100px 220px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 180px 250px, white, transparent),
+                radial-gradient(1px 1px at 280px 300px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1.5px 1.5px at 380px 350px, white, transparent),
+                radial-gradient(1px 1px at 480px 280px, rgba(255,255,255,0.5), transparent);
+            background-size: 550px 400px;
+            animation: twinkle 8s ease-in-out infinite alternate;
+        }
+
+        .stars::after {
+            background-image: 
+                radial-gradient(1px 1px at 25px 45px, white, transparent),
+                radial-gradient(1.5px 1.5px at 75px 110px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 125px 175px, white, transparent),
+                radial-gradient(1.2px 1.2px at 175px 225px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 225px 75px, white, transparent),
+                radial-gradient(1.5px 1.5px at 275px 325px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 325px 125px, white, transparent),
+                radial-gradient(1px 1px at 375px 375px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1.2px 1.2px at 425px 225px, white, transparent),
+                radial-gradient(1px 1px at 475px 175px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.5px 1.5px at 525px 325px, white, transparent),
+                radial-gradient(1px 1px at 60px 300px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 140px 350px, white, transparent),
+                radial-gradient(1.2px 1.2px at 220px 280px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 340px 260px, white, transparent),
+                radial-gradient(1.5px 1.5px at 440px 320px, rgba(255,255,255,0.5), transparent);
+            background-size: 600px 450px;
+            animation: twinkle 10s ease-in-out infinite alternate-reverse;
+            animation-delay: -3s;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.6; transform: translateY(0); }
+            100% { opacity: 1; transform: translateY(-10px); }
+        }
+
+        /* Nebula gradient overlay */
+        [data-theme="nebula"] .stars::before {
+            background-image: 
+                radial-gradient(ellipse at 20% 80%, rgba(199, 125, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 77, 109, 0.1) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20px 30px, white, transparent),
+                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1.5px 1.5px at 90px 40px, white, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1.2px 1.2px at 160px 120px, white, transparent),
+                radial-gradient(1px 1px at 200px 50px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.5px 1.5px at 250px 160px, white, transparent),
+                radial-gradient(1px 1px at 300px 100px, rgba(255,255,255,0.5), transparent);
+            background-size: 100% 100%, 100% 100%, 550px 400px, 550px 400px, 550px 400px, 550px 400px, 550px 400px, 550px 400px, 550px 400px, 550px 400px;
         }
 
         body {
@@ -229,7 +395,31 @@
             color: var(--text-primary);
         }
 
-        /* Theme toggle button */
+        /* Theme selector */
+        .theme-selector {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5em 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .theme-selector:hover, .theme-selector:focus {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+            outline: none;
+        }
+
+        .theme-selector option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Toggle button */
         .theme-toggle {
             background: var(--bg-card);
             border: 2px solid var(--border-color);
@@ -239,7 +429,6 @@
             cursor: pointer;
             font-size: 0.9em;
             transition: all 0.3s ease;
-            margin-left: 1em;
         }
 
         .theme-toggle:hover {
@@ -518,6 +707,7 @@
     </style>
 </head>
 <body>
+    <div class="stars"></div>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <header>
@@ -544,7 +734,15 @@
                 <label for="showinner">Show full text for event responses</label>
             </li>
             <li>
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Toggle Theme</button>
+                <label for="theme-selector">Theme: </label>
+                <select class="theme-selector" id="theme-selector" aria-label="Select theme">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="nebula">🌌 Nebula</option>
+                    <option value="starfield">✨ Starfield</option>
+                    <option value="cosmos">🚀 Cosmos</option>
+                    <option value="terminal">💻 Terminal</option>
+                </select>
             </li>
             <li>
                 <button class="theme-toggle" id="toc-toggle" aria-label="Toggle table of contents">Toggle Table of Contents</button>
@@ -562,15 +760,15 @@
     <main id="main-content">
 
     <script>
-        // Theme toggle
+        // Theme selector
         (function() {
-            const themeToggle = document.getElementById('theme-toggle');
+            const themeSelector = document.getElementById('theme-selector');
             const currentTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', currentTheme);
+            themeSelector.value = currentTheme;
 
-            themeToggle.addEventListener('click', function() {
-                const current = document.documentElement.getAttribute('data-theme');
-                const newTheme = current === 'dark' ? 'light' : 'dark';
+            themeSelector.addEventListener('change', function() {
+                const newTheme = themeSelector.value;
                 document.documentElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
             });
